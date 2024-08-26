@@ -1,0 +1,32 @@
+name: Ansible Docker Automation
+
+on:
+  push:
+    branches:
+      - main  # Trigger workflow on push to 'main' branch
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  ansible-playbook:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker.io python3-pip
+        pip3 install ansible
+        ansible-galaxy collection install community.docker
+
+    - name: Run Ansible Playbook to Spin Up Docker Container
+      env:
+        ANSIBLE_CONFIG: ./ansible/ansible.cfg  # Optional: Specify a custom Ansible config file if needed
+      run: ansible-playbook ansible/docker-playbook.yml -e "state=started"
+
+    - name: Run Ansible Playbook to Tear Down Docker Container
+      if: always()  # Ensures this step runs regardless of previous step's success
+      run: ansible-playbook ansible/docker-playbook.yml -e "state=absent"
+

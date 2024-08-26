@@ -1,0 +1,30 @@
+---
+- name: Docker Image Management Playbook
+  hosts: localhost
+  gather_facts: no
+  vars:
+    container_name: my_docker_container
+    image_name: nginx:latest
+    state: started  # Use 'started' to spin up and 'absent' to tear down
+
+  tasks:
+    - name: Pull Docker image
+      community.docker.docker_image:
+        name: "{{ image_name }}"
+        source: pull
+
+    - name: Spin up Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ image_name }}"
+        state: "{{ state }}"
+        ports:
+          - "8080:80"
+      when: state == "started"
+
+    - name: Tear down Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: "{{ state }}"
+      when: state == "absent"
+
