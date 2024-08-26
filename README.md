@@ -60,3 +60,35 @@ The GitHub Actions workflow (`.github/workflows/ansible-docker.yml`) automates t
    - Spins up Docker containers as defined in the playbook.
    - Tears down Docker containers at the end, ensuring a clean state.
 
+## How to Use
+
+1. **Push Changes**:  
+
+   Make any changes to your Ansible playbook or repository content and push to the `main` branch.
+   
+2. **Trigger the Workflow**:
+
+   - The workflow is automatically triggered on any push to the `main` branch.
+   - You can also manually trigger the workflow via the **Actions** tab in GitHub.
+
+3. **Monitor Workflow Execution**:
+
+   Go to the **Actions** tab in your GitHub repository to monitor the workflow's progress and see logs for each step.
+
+## Customization
+
+- **Change Trigger Branch**: Modify the `on: push: branches` field in the workflow file to specify different branches that should trigger the workflow.
+- **Modify Ansible Playbook**: Update the `ansible/docker-playbook.yml` as needed to manage different Docker containers or configurations.
+- **Add Secrets or Environment Variables**: Use GitHub Secrets to securely manage any sensitive data required by your playbook. You can add secrets in the repository settings under **Settings** > **Secrets and variables** > **Actions**.
+
+## Troubleshooting
+
+- **Unmet Dependencies**: Ensure no conflicting packages exist before Docker installation. The workflow includes steps to remove existing Docker-related packages to avoid conflicts.
+- **Permissions Issues**: Ensure the GitHub Actions runner has the necessary permissions to execute Docker commands.
+- **Workflow Fails**: If the workflow fails, check the logs in the **Actions** tab for detailed error messages and adjust your playbook or workflow steps accordingly.
+
+## Conclusion
+
+By setting up this GitHub Actions workflow, you can automate the management of Docker containers using Ansible, enabling continuous integration and deployment directly from your GitHub repository.
+
+Feel free to customize the workflow and playbook to suit your specific needs!
